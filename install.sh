@@ -33,7 +33,7 @@ sleep 1
 
 echo -e "${YEL}X-> Docker o‘rnatilmoqda...${NC}"
 apt update
-apt install docker.io docker-compose -y
+apt install docker.io docker-compose curl -y
 systemctl start docker
 systemctl enable docker
 
@@ -121,12 +121,16 @@ mkdir -p ./data/{database,var,nginx,certs,logs}
 echo -e "${GRN}X-> Containerlar ishga tushmoqda...${NC}"
 docker-compose up -d
 
-echo -e "${GRN}X-> Panel sozlanmoqda...${NC}"
-docker-compose run --rm panel php artisan key:generate --force
-docker-compose run --rm panel php artisan migrate --seed --force
+# ✅ WAIT: Database tayyor bo‘lishini kutish
+echo -e "${CYN}X-> Database tayyor bo‘lishini kuting (20s)...${NC}"
+sleep 20
 
-echo -e "${GRN}X-> Admin yarat...${NC}"
-docker-compose run --rm panel php artisan p:user:make
+echo -e "${GRN}X-> Panel sozlanmoqda...${NC}"
+docker-compose exec panel php artisan key:generate --force
+docker-compose exec panel php artisan migrate --seed --force
+
+echo -e "${GRN}X-> Admin yaratish...${NC}"
+docker-compose exec panel php artisan p:user:make
 
 echo -e "${YEL}✅ TAMOM BO‘LDI RAHMIDDIIN 🚀${NC}"
 echo -e "${CYN}👉 Brauzer: http://YOUR_VPS_IP:8030${NC}"
