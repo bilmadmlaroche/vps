@@ -99,7 +99,7 @@ services:
       - "./data/logs:/app/storage/logs"
     environment:
       <<: [*panel-environment, *mail-environment]
-      DB_PASSWORD: "RAHMID123"
+      DB_PASSWORD: "RahmiddinRoot321"
       APP_ENV: "production"
       CACHE_DRIVER: "redis"
       SESSION_DRIVER: "redis"
